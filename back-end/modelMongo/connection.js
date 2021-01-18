@@ -1,7 +1,13 @@
 const mongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
 
-// usando mongodb
+// usando mongodb com usuário e senha
+// para rodar localmente teste
+const user = encodeURIComponent(process.env.DB_USER);
+const password = encodeURIComponent(process.env.DB_PASSWORD);
+const authMechanism = 'DEFAULT';
+
+const DB_URL = `mongodb://${user}:${password}@localhost:27017/?authMechanism=${authMechanism}`;
 
 let schema = null;
 
@@ -9,7 +15,7 @@ const connection = async () => {
   if (schema) return Promise.resolve(schema);
 
   return mongoClient
-    .connect(process.env.DB_URL, {
+    .connect(DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
